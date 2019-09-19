@@ -87,6 +87,7 @@ Useimmissa simulaatioissa suoritetaan jossakin vaiheessa fysiikan integraatio, j
 Lisäksi huomioitavia tekijöitä ovat törmäystarkistelu (collision detection) mm. ohjuksen, maaston, rakennuksen jne. kanssa sekä tästä aiheutuvat seurakset.
 Fysiikaalisten voimien yhdistäminen lentoon on lähes täysin erilaisien voimavektoreiden momenttien yhdistämistä: kineettinen energia (massa, liikesuunta), työntövoima (suuruus, sijainti), nostovoima, ilmanvastus, laskutelineiden ja maan yhteys ym. 
 On myös huomioitava ulkoisten tekijöiden vaikutus kuten sivutuuli laskeutuessa, laskutelineiden jousivoima (etenkin kevyet koneet) jne.
+
 Lentävällä laitteella voi olla samaan aikaan siirtymää jokaisella akselilla (pystynopeus, matkanopeus, sideslip), sekä kiertomomenttia jokaisen akselin suhteen. Tästä johtuen nk. 6DOF (”six degrees of freedom”) simulaatio käyttää vektorilaskentaa, tyypillisesti vektoreiden summaa ja ristituloa.
 Moottoreiden työntövoimasta ja sijainnista johtuvat suunnan ja momentin muutokset on myös tällöin yksinkertaista yhdistää liikevoimaa riippumatta siitä, tukeeko moottori voiman vektorointia vai ei. Lisäksi esimerkiksi potkurikoneissa potkurin kiertomomentti on merkittävä tekijä laskeutumisessa ja lentoonlähdössä 
 Polttoaineen määrä eri tankeissa vaikuttaa lentokoneen inertiaan ja sen kiertomomenttiin ja siten sen lento-ominaisuuksiin. Tankkien sijainti ja polttoaineen määrä eri tankeissa on yksi huomioitava asia, sekä mahdolliset lisäsäiliöt. Erilaiset ulkoiset kuormat kuten lisäsäiliöt, ohjukset ja pommit aiheuttavat paitsi painoa myös ilmanvastusta, joka pienempitehoisien moottorien kanssa voi aiheuttaa merkittäviä rajoitteita mahdollisen kuorman määrälle.
@@ -97,8 +98,9 @@ Simulaatio-ohjelman toteutuksessa on huomioitava useita tarpeita: vaste-aika (re
 Simulaatiot ovat CPU:lle verrattain raskaampia kuin pelimäisemmät ohjelmat, jotka taas voivat sivuuttaa vaatimukset todenperäisyydestä ja keskittyä efekteihin ja visuaaliseen ilmeeseen.
 CFD-analyysi on liian raskasta suoritettavaksi reaaliaikaisessa ohjelmassa. Siksi on käytettävä erilaisia menetelmiä yhtälöiden yksinkertaistamiseen ja laskemalla tietoja etukäteen.
 Aerodynamiikan laskuja myös pyritään minimoimaan ja soveltamaan konekohtaisesti. Täysin yleispätevää aerodynamiikka koodia käytetään harvoin koska se on:
-    a) liian raskasta (suorituskykyvaatimukset)
-    b) liian karkeatasoista (ei riittävästi konekohtaisien erojen huomiointia)
+* a) liian raskasta (suorituskykyvaatimukset)
+* b) liian karkeatasoista (ei riittävästi konekohtaisien erojen huomiointia)
+
 Tästä johtuen aerodynamiikan aiheuttamat voimat joudutaan tietyissä määrin ohjelmoimaan jopa konekohtaisesti, vertaa esim. delta-siipisen Miragen ja F-16 hävittäjän aerodynaamisia eroja. Tosin on myös paljon koneita joissa sama runko voidaan soveltaa sellaisenaan kuten toisen maailmansodan hävittäjissä usein.
 
 ### 5.2 Ohjelmakoodin menetelmät
@@ -107,7 +109,7 @@ Olettaen esimerkki jossa ohjainvaste pienellä liikkellä on vähäisempi ja suu
 if (lateralInput > -0.5 && lateralinput < 0.5)
 	rollangle = ...
 else
-	rollangle = …
+	rollangle = ...
 ```
 
 Menetelmä on yksinkertainen ja helppo toteuttaa mutta epärealistinen ja voi aiheuttaa havaittavaa ”pykälää” toiminnassa tietyllä alueella.
@@ -123,7 +125,9 @@ rollangle = rollTable[index];
 Tässä menetelmässä on huomattavasti enemmän todenperäisyyttä, mutta riippuu taulukoiden tarkkuudesta sekä vaatii normaalisti interpolaation väliinjäävien arvojen löytämiseksi. Tämä vielä huomattavasti monimutkaistuu kun on kyse aerodynamiikasta.
 
 Kolmas menetelmä, joka on tarkin mutta voi olla sekä laskennallisesti vaativin että vaikein kehittää, on käyttää yhtälöjoukkoja arvoille. Esimerkki lineaariyhtälönä yksinkertaisuuden vuoksi:
+```C
 rollangle = lateralInput * multiplier + offset;
+```
 
 Käytännössä tarvittava toiminnallisuus on usein huomattavasti yllämainittua monimutkaisempaa.
 
@@ -174,9 +178,12 @@ Tällä periaatteella samaan fysiikkaan voidaan lisätä useita vaikuttavia elem
 
 ## 6. Helikopterilento, VTOL vs. STOL
 Helikopterien ts. ”pyöriväsiipisien koneiden” lento on yksi suhteellisen vaativa simuloitava, jossa ilmavirtauksilla on keskeinen osa.
+
 Yleinen vitsi on että helikopterit pysyvät ilmassa koska ovat niin rumia että maa hylkii niitä.
 Normaalisti helikoptereissa käytetään yhtä tai kahta suihkumoottoria voimanlähteenä. Suihkumoottorin voima välitetään vakionopeusvaihteistolla pääroottoriin ja peräroottoriin ja lennon aikana moottorin on tavallisesti samalla tehoasetuksella jatkuvasti. Lisätehoa on varattu poikkeuksellisien tilanteiden hallintaan kuten vortex ring state, jossa kopteri menettää nostovoimaansa johtuen ilman virtauksesta alaspäin roottorin ajautuessa itsensä aiheuttamaan virtaukseen.
+
 Helikopterin roottorin pyöriessä lavat tuottavat ilman alaspäin virtauksen, joka toimii koneen nosteena. Tavallisimmissa helikoptereissa roottorin vääntömomenttia kompensoidaan peräroottorilla (mm. UH-1).  On olemassa myös koptereita, joissa peräroottorin sijaan käytetään kahta roottoria (mm. CH-47, Ka-50, Ka-52). Asian yksinkertaistamiseksi puhutaan tavallisesti yleisemmästä konfiguraatiosta yhdellä pääroottorilla ja yhdellä peräroottorilla. 
+
 Roottorin tuottaman virtauksen ohjaaminen eri kulmassa tuottaa liikeen eteen/taaksepäin tai sivuille, jolloin kopteria kallistetaan menosuuntaan kohti. Seurauksena nostovoimasta osa on ”työntövoimaa”, jolloin nostovoima vähenee mutta tätä voidaan kompensoida roottorin lapakulmaa muuttamalla. Tämän seurauksena taas roottoriin kohdistuvat suuremmat vääntövoimat jota kompensoidaan lisäämällä peräroottorin lapakulmaa.
 Helikopterissa siis ei ole koskaan erillistä lentomallia nousuun tai matkaan kuten joskus näkee väitettävän. Kyseessä on ainoastaan tiettyjen voimien suuruudesta ja suuntauksesta.
 VTOL lentokoneissa (mm. Harrier) ei ole myöskään erilaista lentomallia ”matkalentoon” vaan kyse on vain työntövoiman suuntaamisesta: Harrier käyttää sivuilla olevia suuttimia moottorin tuottaman työntövoiman suuntaamiseen jolloin saadaan leijunnan ja matkalennon välillä useita eri nopeuksia.
@@ -206,9 +213,8 @@ Toivottavasti tämän lukiessa jollakin herää kiinnostus perehtyä aiheeseen e
 
 ## Materiaalia
 Materiaalia kiinnostuneille:
-https://github.com/ipr/F-16Demo/
-
-http://www.virtualpilots.fi/feature/articles/109myths/
+* https://github.com/ipr/F-16Demo/
+* http://www.virtualpilots.fi/feature/articles/109myths/
 
 ## Viitteitä
 Kirjallisuutta aiheesta kiinnostuneille:
