@@ -39,14 +39,16 @@ Käytettävät ”coefficient” kertoimet ovat suunnattomia (”dimensionless�
 Kertoimien määrittäminen kullekin ohjainpinnalle ja siiven muodolle on työlästä menetelmästä riippuen ja se on normaalisti tehtävä useilla kulmilla, olosuhteilla ja kombinaatioilla riippuen mallinnuksen kohteesta. Sekä tuulitunnelissa että CFD-analyysissa on huomioitava ongelmakohtia joka vaatii asiaan perehtymistä oikeiden kertoimien saamiseksi. Usein voidaan käyttää laskennallista periaatetta kokeellisten arvojen sovittamiseksi (lue lisää mm. NACA Variable Density Tunnel (VDT)).
 
 Esimerkkinä ”coefficient” kerrointa voidaan käyttää osana kaavaa, kuten ilmajarrun aiheuttama ilmanvastus:
+```
 CD * cos(kulma) * dynaaminen ilmanpaine * ilmajarrun pinta-ala
+```
 .. jossa dynaaminen ilmanpaine on:
 ```
 	VT2 * ilmanpaine * 1/2
 ```
 .. jossa VT on nopeus ja ilmajarrun pinta-ala on tunnettu vakio.
 
-Kun hydraulinen ohjausilmajarrulle muuttaa sen asentoa, saadaan riittävän realistinen ilmanvastus myös kun jarru ei ole kokonaan sisällä tai kokonaan ulkona. Vastaavat välivaiheet ja muutokset ilmanvastuksessa ovat olennaisia jotta lentämisen vaste pysyy realistisena ilman yllättäviä tai epärealistisia ”pykäliä” tai hyppäyksiä käytöksessä.
+Kun hydraulinen ohjaus ilmajarrulle muuttaa sen asentoa, saadaan riittävän realistinen ilmanvastus myös kun jarru ei ole kokonaan sisällä tai kokonaan ulkona. Vastaavat välivaiheet ja muutokset ilmanvastuksessa ovat olennaisia jotta lentämisen vaste pysyy realistisena ilman yllättäviä tai epärealistisia ”pykäliä” tai hyppäyksiä käytöksessä.
 
 Moderneissa hävittäjissä on ohjattavat pinnat sekä siiven etureunassa (leading edge flap, LEF) ja siiven takareunassa (trailing edge flap, TEF). Jälkimmäiset voivat koneesta riippuen yhdistää laskusiivekkeen ja tyypillisen ohjainsiivekkeen toimintoja eri tavoin (usein lentokoneen ohjelmiston hallittavana). LEF ja TEF tarkoitus on muuttaa siiven virtauksen muotoa, jolloin siipi toimii paremmin korkeilla hyökkäyskulmilla ja vähemmällä sakkauksen riskillä (mm. F-18).
 
@@ -85,7 +87,7 @@ Useimmissa simulaatioissa suoritetaan jossakin vaiheessa fysiikan integraatio, j
 * vääntömomentit
 
 Lisäksi huomioitavia tekijöitä ovat törmäystarkistelu (collision detection) mm. ohjuksen, maaston, rakennuksen jne. kanssa sekä tästä aiheutuvat seurakset.
-Fysiikaalisten voimien yhdistäminen lentoon on lähes täysin erilaisien voimavektoreiden momenttien yhdistämistä: kineettinen energia (massa, liikesuunta), työntövoima (suuruus, sijainti), nostovoima, ilmanvastus, laskutelineiden ja maan yhteys ym. 
+Fysikaalisten voimien yhdistäminen lentoon on lähes täysin erilaisien voimavektoreiden momenttien yhdistämistä: kineettinen energia (massa, liikesuunta), työntövoima (suuruus, sijainti), nostovoima, ilmanvastus, laskutelineiden ja maan yhteys ym. 
 On myös huomioitava ulkoisten tekijöiden vaikutus kuten sivutuuli laskeutuessa, laskutelineiden jousivoima (etenkin kevyet koneet) jne.
 
 Lentävällä laitteella voi olla samaan aikaan siirtymää jokaisella akselilla (pystynopeus, matkanopeus, sideslip), sekä kiertomomenttia jokaisen akselin suhteen. Tästä johtuen nk. 6DOF (”six degrees of freedom”) simulaatio käyttää vektorilaskentaa, tyypillisesti vektoreiden summaa ja ristituloa.
@@ -95,9 +97,10 @@ Polttoaineen määrä eri tankeissa vaikuttaa lentokoneen inertiaan ja sen kiert
 ## 5. Ohjelmisto
 ### 5.1 Yleistä
 Simulaatio-ohjelman toteutuksessa on huomioitava useita tarpeita: vaste-aika (reaaliaikaisuus), laskentakapasiteetti (CPU nopeus) ym.
+
 Simulaatiot ovat CPU:lle verrattain raskaampia kuin pelimäisemmät ohjelmat, jotka taas voivat sivuuttaa vaatimukset todenperäisyydestä ja keskittyä efekteihin ja visuaaliseen ilmeeseen.
 CFD-analyysi on liian raskasta suoritettavaksi reaaliaikaisessa ohjelmassa. Siksi on käytettävä erilaisia menetelmiä yhtälöiden yksinkertaistamiseen ja laskemalla tietoja etukäteen.
-Aerodynamiikan laskuja myös pyritään minimoimaan ja soveltamaan konekohtaisesti. Täysin yleispätevää aerodynamiikka koodia käytetään harvoin koska se on:
+Aerodynamiikan laskuja myös pyritään minimoimaan ja soveltamaan konekohtaisesti. Täysin yleispätevää aerodynamiikkakoodia käytetään harvoin koska se on:
 * a) liian raskasta (suorituskykyvaatimukset)
 * b) liian karkeatasoista (ei riittävästi konekohtaisien erojen huomiointia)
 
