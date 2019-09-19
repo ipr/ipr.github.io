@@ -209,7 +209,9 @@ Tässä vain muutamia huomioita yliäänisissä nopeuksissa tapahtuvan lennon si
 Lentokonejärjestelmien kuten avioniikan simulointi ja mallintaminen ovat oma kokonaisuutensa.
 Avioniikaan kuuluu perusmittareita (korkeus, suunta ja navigaatio, ADI, HSI) sekä monimutkaisempia kuten aseiden hallintajärjestelmät, tutkat, ohjelmoitavat omasuojalaitteet ym.
 
-Näiden järjestelmien mallintamiseen ei ole mitään yhtä yleispätevää lähestymistapaa, mutta tiettyjä komponentteja voi käyttää sellaisenaan useissa konetyypeissä jotka käyttävät vaikkapa samaa mittarityyppiä.
+Esimerkkinä korkeusmittari kertoo korkeuden pitot-putken antaman tiedon perusteella, joka perustuu ilmanpaineeseen. Dynaaminen ilmanpaine pitot-putkessa riippuu korkeuden lisäksi lentonopeudesta, jolloin todellinen korkeutta kertova arvo on dynaamisen ja staattisen ilmanpaineen välinen ero. Lisäksi putken jäätyminen ja jäätymistä poistava lämmitys vaikuttavat annettuun arvoon.
+
+Lentokonejärjestelmien mallintamiseen ei ole mitään yhtä yleispätevää lähestymistapaa, mutta tiettyjä komponentteja voi käyttää sellaisenaan useissa konetyypeissä jotka käyttävät vaikkapa samaa mittarityyppiä.
 
 ## 9. Yhteenveto
 Toivottavasti tämän lukiessa jollakin herää kiinnostus perehtyä aiheeseen enemmän. Tavoitteena oli hieman avata simulaatioiden toteutuksia. Aiheesta voisi kirjoittaa huomattavan paljon enemmänkin.
