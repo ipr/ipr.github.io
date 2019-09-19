@@ -1,8 +1,8 @@
-Lentosimulaattorit ja niiden ohjelmointi
+# Lentosimulaattorit ja niiden ohjelmointi
 Ilkka Prusi 2016
 
 
-1. Yleistä
+## 1. Yleistä
 Tässä pyrin avaamaan lentosimulaatioita ja niiden toteuttamista. Suuri osa alan kirjallisuudesta on englanniksi ja käyttää imperial-yksiköitä SI-yksiköiden sijaan, pyrin selventämään näitä tarpeen mukaan.
 
 Yleisesti kotitietokoneilla simulaattorit ovat reaaliaikaisia ja ”man-in-the-loop” simulaatioita kun taas alan tutkimuksessa voidaan käyttää automatisoituja menetelmiä jonkin testiskenaarion laskentaan. 
@@ -23,7 +23,7 @@ Kehittyneissä lentosimulaatioissa mallinnettaan myös lentokoneen käytös läh
 
 Lentokoneen ja maan pinnan välinen on huomioitava usein tavoin. Maaefektin vaikutus sekä laskutelineiden ja renkaiden kyvyt laskeutumissa näistä ilmeisimpinä tapauksina.
 
-2. Aerodynamiikasta
+## 2. Aerodynamiikasta
 Aerodynamiikassa on huomioitava useita ilmankehän ominaisuuksia, jotka muuttuvat mm. sääolosuhteiden mukaan.
 
 Lentokoneen nopeus tulee vastaan olennaisena tekijänä lähes jokaisessa aerodynamiikkaa koskevassa laskussa. 
@@ -71,7 +71,7 @@ Tässä lyhyt listaus erilaisia lentokyvyn tilanteita joita yksinkertaisemmat si
 * vaakakierre
 * G-ylitys
 
-3. Fysiikan integraatio
+## 3. Fysiikan integraatio
 Useimmissa simulaatioissa suoritetaan jossakin vaiheessa fysiikan integraatio, jossa yhdistyvät koneeseen vaikuttavat eri voimat. Näitä ovat mm.:
 * työntövoima
 * noste
@@ -85,8 +85,8 @@ Lentävällä laitteella voi olla samaan aikaan siirtymää jokaisella akselilla
 Moottoreiden työntövoimasta ja sijainnista johtuvat suunnan ja momentin muutokset on myös tällöin yksinkertaista yhdistää liikevoimaa riippumatta siitä, tukeeko moottori voiman vektorointia vai ei. Lisäksi esimerkiksi potkurikoneissa potkurin kiertomomentti on merkittävä tekijä laskeutumisessa ja lentoonlähdössä 
 Polttoaineen määrä eri tankeissa vaikuttaa lentokoneen inertiaan ja sen kiertomomenttiin ja siten sen lento-ominaisuuksiin. Tankkien sijainti ja polttoaineen määrä eri tankeissa on yksi huomioitava asia, sekä mahdolliset lisäsäiliöt. Erilaiset ulkoiset kuormat kuten lisäsäiliöt, ohjukset ja pommit aiheuttavat paitsi painoa myös ilmanvastusta, joka pienempitehoisien moottorien kanssa voi aiheuttaa merkittäviä rajoitteita mahdollisen kuorman määrälle.
 
-5. Ohjelmisto
-5.1 Yleistä
+## 5. Ohjelmisto
+### 5.1 Yleistä
 Simulaatio-ohjelman toteutuksessa on huomioitava useita tarpeita: vaste-aika (reaaliaikaisuus), laskentakapasiteetti (CPU nopeus) ym.
 Simulaatiot ovat CPU:lle verrattain raskaampia kuin pelimäisemmät ohjelmat, jotka taas voivat sivuuttaa vaatimukset todenperäisyydestä ja keskittyä efekteihin ja visuaaliseen ilmeeseen.
 CFD-analyysi on liian raskasta suoritettavaksi reaaliaikaisessa ohjelmassa. Siksi on käytettävä erilaisia menetelmiä yhtälöiden yksinkertaistamiseen ja laskemalla tietoja etukäteen.
@@ -95,7 +95,7 @@ Aerodynamiikan laskuja myös pyritään minimoimaan ja soveltamaan konekohtaises
     b) liian karkeatasoista (ei riittävästi konekohtaisien erojen huomiointia)
 Tästä johtuen aerodynamiikan aiheuttamat voimat joudutaan tietyissä määrin ohjelmoimaan jopa konekohtaisesti, vertaa esim. delta-siipisen Miragen ja F-16 hävittäjän aerodynaamisia eroja. Tosin on myös paljon koneita joissa sama runko voidaan soveltaa sellaisenaan kuten toisen maailmansodan hävittäjissä usein.
 
-5.2 Ohjelmakoodin menetelmät
+### 5.2 Ohjelmakoodin menetelmät
 Olettaen esimerkki jossa ohjainvaste pienellä liikkellä on vähäisempi ja suurella liikkeellä suurempi, voisi karkean toiminnon tehdä käyttäen arvo-aluetta laskennassa:
 if (lateralInput > -0.5 && lateralinput < 0.5)
 	rollangle = ...
@@ -117,7 +117,7 @@ rollangle = lateralInput * multiplier + offset;
 
 Käytännössä tarvittava toiminnallisuus on usein huomattavasti yllämainittua monimutkaisempaa.
 
-5.3 Lineaarinen vs. epälineaarinen malli
+### 5.3 Lineaarinen vs. epälineaarinen malli
 Yksinkertainen tapa toteuttaa malli olisi käyttää lineaarisia yhtälöitä. Valitettavasti useimmissa tapauksissa tällä ei saada realistista mallinnusta.
 
 Tähän mennessä on puhuttu simulaatiosta yleisellä tasolla. Tietyn lentokoneen ominaisuuksien mallintamiseen tarvitaan kuitenkin enemmän yksityiskohtia simulaatioon joka tarkoittaa epälineaarisen mallinnuksen käyttämistä.
@@ -136,7 +136,7 @@ Eräissä lentokoneissa ohjausjärjestelmät ovat toteutettu analogielektroniika
 
 NASA on tehnyt tutkimuksia erilaisien lentokoneiden kehitysvaiheissa ja tästä johtuen joihinkin koneisiin on saatavilla yksityiskohtaistakin tietoa niiden toiminnasta, mutta usein johonkin modifikaatioon liittyen (mm. YF-16 prototyyppi, F16 XL, F-18 HARV).
 
-5.4 Fysiikkaintegraatio
+### 5.4 Fysiikkaintegraatio
 Kuten aiemmin mainitsin fysiikan integraatiossa koneeseen vaikuttavat eri voimat yhdistetään. Fysiikkaintegraatio on usein myös yleispätevin osa simulaatiosta, jota voidaan käyttää sellaisenaan tai pienin muutoksin muissakin simulaatioissa.
 
 Usein ohjelmakoodissa on määritelty 3-akselin vektori, jossa on eriteltynä x,y,z akselien suhteen vaikuttava voima. 
@@ -154,7 +154,7 @@ Voiman sijaintivaikutus suhteessa painokeskipisteeseen:
 
 Tällä periaatteella samaan fysiikkaan voidaan lisätä useita vaikuttavia elementtejä ja huomioida sekä niin suuruus että suuntaus. Pommikoneissa kuten B-17 neljällä moottorilla jokaisella on vaikutus sekä koneen suuntaan että kiertomomentti koneen pystyakselin ympäri etäisyyden mukaan.  Näin moottorien eri käyttöteho voidaan myös huomioida lentotilanteen aikana.
 
-6. Helikopterilento, VTOL vs. STOL
+## 6. Helikopterilento, VTOL vs. STOL
 Helikopterien ts. ”pyöriväsiipisien koneiden” lento on yksi suhteellisen vaativa simuloitava, jossa ilmavirtauksilla on keskeinen osa.
 Yleinen vitsi on että helikopterit pysyvät ilmassa koska ovat niin rumia että maa hylkii niitä.
 Normaalisti helikoptereissa käytetään yhtä tai kahta suihkumoottoria voimanlähteenä. Suihkumoottorin voima välitetään vakionopeusvaihteistolla pääroottoriin ja peräroottoriin ja lennon aikana moottorin on tavallisesti samalla tehoasetuksella jatkuvasti. Lisätehoa on varattu poikkeuksellisien tilanteiden hallintaan kuten vortex ring state, jossa kopteri menettää nostovoimaansa johtuen ilman virtauksesta alaspäin roottorin ajautuessa itsensä aiheuttamaan virtaukseen.
@@ -164,7 +164,7 @@ Helikopterissa siis ei ole koskaan erillistä lentomallia nousuun tai matkaan ku
 VTOL lentokoneissa (mm. Harrier) ei ole myöskään erilaista lentomallia ”matkalentoon” vaan kyse on vain työntövoiman suuntaamisesta: Harrier käyttää sivuilla olevia suuttimia moottorin tuottaman työntövoiman suuntaamiseen jolloin saadaan leijunnan ja matkalennon välillä useita eri nopeuksia.
 Lentokoneissa, joissa on työntövoiman vektorointi (mm. F-22), löytyvät jälleen samat periaatteet: työntövoiman suuntaus tekee antaa tietyn kiertomomentin koneen lennolle suunnan, sijainnin ja voiman mukaan. Monimoottorisissa koneissa (mm. B-17) on myös sama ilmiö kun moottorit toimivat eri asetuksilla tai kun osa on sammutettuina.
 
-7. Yliääniset nopeudet
+## 7. Yliääniset nopeudet
 Aliäänisillä nopeuksilla (mach numero <1) ilmakehää voidaan mallintaa pääosin ”kiinteänä” elementtinä. Yliäänisillä nopeuksilla (mach numero >1) on huomioitava ilman virtaukset suuremmalla tarkkuudella josta tulee huomattavasti lisää työtä.
 
 Yliäänisillä nopeuksilla on mm. arvioitava shokkiaallon muodostuminen siiven pinnalla ja sen vaikutus ohjainpinnan toimintakykyyn. Aallon kohta voi aiheuttaa sen, että varsinainen ohjainpinta on alemman paineen alla eikä sen vaikutus lentokoneen ohjattavuuteen tai vakauteen ole vastaavanlainen kuin aliäänisissä nopeuksissa.
@@ -177,23 +177,23 @@ Suurilla yliäänisillä nopeuksilla ilman kitkan aiheuttama lämpötila voi nou
 
 Tässä vain muutamia huomioita yliäänisissä nopeuksissa tapahtuvan lennon simulointiin. Aihe on melko monimutkainen ja siitä pitäisi kirjoittaa huomattavan paljon.
 
-8. Järjestelmämallinnus
+## 8. Järjestelmämallinnus
 Lentokonejärjestelmien kuten avioniikan simulointi ja mallintaminen ovat oma kokonaisuutensa.
 Avioniikaan kuuluu perusmittareita (korkeus, suunta ja navigaatio, ADI, HSI) sekä monimutkaisempia kuten aseiden hallintajärjestelmät, tutkat, ohjelmoitavat omasuojalaitteet ym.
 
 Näiden järjestelmien mallintamiseen ei ole mitään yhtä yleispätevää lähestymistapaa, mutta tiettyjä komponentteja voi käyttää sellaisenaan useissa konetyypeissä jotka käyttävät vaikkapa samaa mittarityyppiä.
 
-9. Yhteenveto
+## 9. Yhteenveto
 Toivottavasti tämän lukiessa jollakin herää kiinnostus perehtyä aiheeseen enemmän. Tavoitteena oli hieman avata simulaatioiden toteutuksia. Aiheesta voisi kirjoittaa huomattavan paljon enemmänkin.
 
 
-Materiaalia
+## Materiaalia
 Materiaalia kiinnostuneille:
 https://github.com/ipr/F-16Demo/
 
 http://www.virtualpilots.fi/feature/articles/109myths/
 
-Viitteitä
+## Viitteitä
 Kirjallisuutta aiheesta kiinnostuneille:
 Fundamentals of Aerodynamics, John D Anderson Jr.
 An introduction to computational fluid dynamics – The finite volume method, Versteeg & Malalasekera
