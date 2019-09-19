@@ -41,7 +41,9 @@ Kertoimien määrittäminen kullekin ohjainpinnalle ja siiven muodolle on työl�
 Esimerkkinä ”coefficient” kerrointa voidaan käyttää osana kaavaa, kuten ilmajarrun aiheuttama ilmanvastus:
 CD * cos(kulma) * dynaaminen ilmanpaine * ilmajarrun pinta-ala
 .. jossa dynaaminen ilmanpaine on:
+```
 	VT2 * ilmanpaine * 1/2
+```
 .. jossa VT on nopeus ja ilmajarrun pinta-ala on tunnettu vakio.
 
 Kun hydraulinen ohjausilmajarrulle muuttaa sen asentoa, saadaan riittävän realistinen ilmanvastus myös kun jarru ei ole kokonaan sisällä tai kokonaan ulkona. Vastaavat välivaiheet ja muutokset ilmanvastuksessa ovat olennaisia jotta lentämisen vaste pysyy realistisena ilman yllättäviä tai epärealistisia ”pykäliä” tai hyppäyksiä käytöksessä.
@@ -53,13 +55,17 @@ Perävakaimet ovat tyypillisesti käytössä pystykulman (pitch) ohjaukseen, mut
 Kuten aiemmin mainittu, eri ohjainpinnoille määritellään niiden vaikutukset eri tilanteissa. Kiertomomentit eri osilta voidaan laskea niiden aiheuttamasta nosteesta ja ilmanvastuksesta, sekä sijainnista ja pinta-alasta koneessa. Käytännön esimerkkinä perävakaimen nostovoima ja ilmanvastus vaikuttavat koneen pystymomenttiin CM, jonka perusteella voidaan laskea vaikutus koneen nokan nousuun eri nopeuksilla kuten lentoonlähdön aikana. Sama periaate pätee eri ohjainpinnoille ja niiden vaikutukseen kiertomomentille eri akseleiden suhteen (pitch, roll, yaw).
 
 Coefficient-kertoimet voidaan periaatteessa määritellä funktioilla Reynoldsin numeron (Re) suhteen:
+```
 	CL = fL(Re, M∞, α)
 	CD = fD(Re, M∞ α)
 	CM = fM(Re, M∞, α)
+```
 .. jossa M∞ on Machin numero ”vapaavirtauksessa” ja  α on asentokulma. Käytönnössä voi olla helpompaa mikäli kertoimet ovat suoraan käytettävissä olevia numeroita.
 
 Machin numero M lasketaan paikallisen virtausnopeuden ja äänennopeuden perusteella:
+```
 M = u / c
+```
 
 Äänen nopeus ilmakehässä riipuu mm. ilman tiheydestä ja lämpötilasta ja on siis muuttuva tekijä eri korkeuksilla. Aerodynamiikan laskennassa käytetäänkin usein dynaamista ilmanpainetta, ”impact pressure” qc tai sen suhdetta ”static” paineeseen (Qc/PS) ilmakehässä. Air data computer (ADC) voi tämän perusteella tehdä päätöksen paljonko siivekkeitä ohjataan esimerkiksi transonic nopeuksissa lennon vakauttamiseen.
 
@@ -97,18 +103,22 @@ Tästä johtuen aerodynamiikan aiheuttamat voimat joudutaan tietyissä määrin 
 
 ### 5.2 Ohjelmakoodin menetelmät
 Olettaen esimerkki jossa ohjainvaste pienellä liikkellä on vähäisempi ja suurella liikkeellä suurempi, voisi karkean toiminnon tehdä käyttäen arvo-aluetta laskennassa:
+```C
 if (lateralInput > -0.5 && lateralinput < 0.5)
 	rollangle = ...
 else
 	rollangle = …
+```
 
 Menetelmä on yksinkertainen ja helppo toteuttaa mutta epärealistinen ja voi aiheuttaa havaittavaa ”pykälää” toiminnassa tietyllä alueella.
 
 Toinen menetelmä ylläolevaan olisi käyttää nk. lookup-taulua:
+```C
 int index = 0;
 for (; index < tableSize; index++)
 	if ( inputTable[index] == lateralInput) break;
 rollangle = rollTable[index];
+```
 
 Tässä menetelmässä on huomattavasti enemmän todenperäisyyttä, mutta riippuu taulukoiden tarkkuudesta sekä vaatii normaalisti interpolaation väliinjäävien arvojen löytämiseksi. Tämä vielä huomattavasti monimutkaistuu kun on kyse aerodynamiikasta.
 
@@ -142,14 +152,22 @@ Kuten aiemmin mainitsin fysiikan integraatiossa koneeseen vaikuttavat eri voimat
 Usein ohjelmakoodissa on määritelty 3-akselin vektori, jossa on eriteltynä x,y,z akselien suhteen vaikuttava voima. 
 
 Mikäli lasketaan siipeen kohdistuva paine seuraavasti:
+```
 siipipaine = dynaaminen paine * siipipinta-ala
+```
 .. siipien nostovoima pystyakselin suhteen:
+```C
 vec3 lift(0.0, 0.0, siipipaine * Cy_total)
+```
 .. voidaan nostovoiman vektori lisätä koneeseen vaikuttaviin kokonaisvoimiin:
+```C
 	common_force.x = lift.x; common_force.y = lift.y; common_force.z = lift.z;
+```
 
 Voiman sijaintivaikutus suhteessa painokeskipisteeseen:
+```C
 	vec3 delta_pos(force_pos.x – cog.x, force_pos.y – cog.y, force_pos.z – cog.z)
+```
 .. saadaan voiman momentti vektorien ristitulona.
 
 Tällä periaatteella samaan fysiikkaan voidaan lisätä useita vaikuttavia elementtejä ja huomioida sekä niin suuruus että suuntaus. Pommikoneissa kuten B-17 neljällä moottorilla jokaisella on vaikutus sekä koneen suuntaan että kiertomomentti koneen pystyakselin ympäri etäisyyden mukaan.  Näin moottorien eri käyttöteho voidaan myös huomioida lentotilanteen aikana.
@@ -185,7 +203,6 @@ Näiden järjestelmien mallintamiseen ei ole mitään yhtä yleispätevää läh
 
 ## 9. Yhteenveto
 Toivottavasti tämän lukiessa jollakin herää kiinnostus perehtyä aiheeseen enemmän. Tavoitteena oli hieman avata simulaatioiden toteutuksia. Aiheesta voisi kirjoittaa huomattavan paljon enemmänkin.
-
 
 ## Materiaalia
 Materiaalia kiinnostuneille:
