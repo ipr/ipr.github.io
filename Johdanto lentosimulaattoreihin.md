@@ -226,11 +226,11 @@ Kirjallisuutta aiheesta kiinnostuneille:
 * Fundamentals of Aerodynamics, John D Anderson Jr.
 * An introduction to computational fluid dynamics – The finite volume method, Versteeg & Malalasekera
 
-Kehittyneitä simulaattoreita:
-* DCS World https://www.digitalcombatsimulator.com
-* X-Plane http://www.x-plane.com
-* IL-2 Sturmovik http://il2sturmovik.com
-* Falcon BMS https://www.bmsforum.org/forum/
+Kehittyneitä simulaattoreita kotikäyttöön:
+* [DCS World]: https://www.digitalcombatsimulator.com
+* [X-Plane]: http://www.x-plane.com
+* [IL-2 Sturmovik]: http://il2sturmovik.com
+* [Falcon BMS]: https://www.bmsforum.org/forum/
 
 Avoimen lähdekoodin projekteja (vaihteleva laatu):
 * FlightGear
@@ -238,8 +238,8 @@ Avoimen lähdekoodin projekteja (vaihteleva laatu):
 * FreeFalcon
 
 CFD-ohjelmia:
-* OpenFOAM http://openfoam.org
+* [OpenFOAM]: http://openfoam.org
 
 Muuta ohjelmistoa:
-* JOVIAL https://en.wikipedia.org/wiki/JOVIAL
+* [JOVIAL]: https://en.wikipedia.org/wiki/JOVIAL
 
